@@ -25,8 +25,12 @@ public class CategoryService {
         return categoryRepository.findByName(name);
     }
 
-    public void deleteCategory(Integer id) {
-        categoryRepository.deleteById(id);
+    public boolean deleteCategory(Integer id) {
+        if (categoryRepository.findById(id) != null) {
+            categoryRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public List<Category> getAllCategories() {
@@ -35,7 +39,7 @@ public class CategoryService {
 
     public Category updateCategory(Integer id, Category updatedCategory) {
         Category category = categoryRepository.findById(id).orElse(null);
-        if(category != null) {
+        if (category != null) {
             category.setName(updatedCategory.getName());
             return categoryRepository.save(category);
         }
